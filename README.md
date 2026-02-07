@@ -129,7 +129,7 @@ the Gemini product page for the current model identifiers.
 The plugin supports configuring Gemini "thinking" features per-model via
 `thinkingConfig`. The available fields depend on the model family:
 
-- For Gemini 3 models: use `thinkingLevel` with values `"low"` or `"high"`.
+- For Gemini 3 models: use `thinkingLevel` with values `"minimal"`, `"low"`, `"medium"`, or `"high"`.
 - For Gemini 2.5 models: use `thinkingBudget` (token count).
 - `includeThoughts` (boolean) controls whether the model emits internal thoughts.
 
@@ -164,6 +164,21 @@ A combined example showing both model types:
 
 If you don't set a `thinkingConfig` for a model, the plugin will use default
 behavior for that model.
+
+### Variants
+
+You can define named configuration presets using the `variants` object. This is useful for creating reusable "profiles" for thinking models.
+
+```json
+"variants": {
+  "variant-name": {
+    "thinkingConfig": {
+      "thinkingLevel": "high",
+      "includeThoughts": true
+    }
+  }
+}
+```
 
 ## Troubleshooting
 
