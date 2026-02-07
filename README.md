@@ -169,6 +169,19 @@ behavior for that model.
 
 You can define named configuration presets using the `variants` object. This is useful for creating reusable "profiles" for thinking models. These variants must be defined inside the `options` object of a specific model.
 
+#### Gemini 3 Thinking Levels
+
+Gemini 3 models use string-based thinking levels. Available levels differ by model:
+
+| Level     | Flash | Pro | Description                      |
+| :-------- | :---: | :-: | :------------------------------- |
+| `minimal` |  ✅   | ❌  | Minimal thinking, lowest latency |
+| `low`     |  ✅   | ✅  | Light thinking                   |
+| `medium`  |  ✅   | ❌  | Balanced thinking                |
+| `high`    |  ✅   | ✅  | Maximum thinking (default)       |
+
+Example configuration with variants:
+
 ```json
 {
   "provider": {
@@ -177,7 +190,43 @@ You can define named configuration presets using the `variants` object. This is 
         "gemini-3-flash-preview": {
           "options": {
             "variants": {
-              "high-reasoning": {
+              "minimal": {
+                "thinkingConfig": {
+                  "thinkingLevel": "minimal",
+                  "includeThoughts": true
+                }
+              },
+              "low": {
+                "thinkingConfig": {
+                  "thinkingLevel": "low",
+                  "includeThoughts": true
+                }
+              },
+              "medium": {
+                "thinkingConfig": {
+                  "thinkingLevel": "medium",
+                  "includeThoughts": true
+                }
+              },
+              "high": {
+                "thinkingConfig": {
+                  "thinkingLevel": "high",
+                  "includeThoughts": true
+                }
+              }
+            }
+          }
+        },
+        "gemini-3-pro-preview": {
+          "options": {
+            "variants": {
+              "low": {
+                "thinkingConfig": {
+                  "thinkingLevel": "low",
+                  "includeThoughts": true
+                }
+              },
+              "high": {
                 "thinkingConfig": {
                   "thinkingLevel": "high",
                   "includeThoughts": true
