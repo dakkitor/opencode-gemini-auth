@@ -47,4 +47,32 @@ describe("request helpers", () => {
     expect((parsed.request as Record<string, unknown>).systemInstruction).toBeDefined();
     expect((parsed.request as Record<string, unknown>).system_instruction).toBeUndefined();
   });
+
+  it("normalizes thinkingConfig from root of request", () => {
+    const input =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
+    const init: RequestInit = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: "hi" }] }],
+        thinkingConfig: { includeThoughts: true, thinkingLevel: "high" },
+      }),
+    };
+
+    const result = prepareGeminiRequest(input, init, "token-123", "project-456");
+
+    const parsed = JSON.parse(result.init.body as string) as Record<string, unknown>;
+    const request = parsed.request as Record<string, unknown>;
+    const generationConfig = request.generationConfig as Record<string, unknown>;
+
+    expect(request.thinkingConfig).toBeUndefined();
+    expect(generationConfig).toBeDefined();
+    expect(generationConfig.thinkingConfig).toEqual({
+      includeThoughts: true,
+      thinkingLevel: "high",
+    });
+  });
 });

@@ -291,7 +291,10 @@ export function prepareGeminiRequest(
         addThoughtSignaturesToFunctionCalls(requestPayload);
 
         const rawGenerationConfig = requestPayload.generationConfig as Record<string, unknown> | undefined;
-        const normalizedThinking = normalizeThinkingConfig(rawGenerationConfig?.thinkingConfig);
+        const rootThinkingConfig = requestPayload.thinkingConfig;
+        const sourceThinkingConfig = rootThinkingConfig ?? rawGenerationConfig?.thinkingConfig;
+
+        const normalizedThinking = normalizeThinkingConfig(sourceThinkingConfig);
         if (normalizedThinking) {
           if (rawGenerationConfig) {
             rawGenerationConfig.thinkingConfig = normalizedThinking;
@@ -302,6 +305,10 @@ export function prepareGeminiRequest(
         } else if (rawGenerationConfig?.thinkingConfig) {
           delete rawGenerationConfig.thinkingConfig;
           requestPayload.generationConfig = rawGenerationConfig;
+        }
+
+        if ("thinkingConfig" in requestPayload) {
+          delete requestPayload.thinkingConfig;
         }
 
         if ("system_instruction" in requestPayload) {
