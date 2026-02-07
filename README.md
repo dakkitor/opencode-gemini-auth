@@ -167,14 +167,26 @@ behavior for that model.
 
 ### Variants
 
-You can define named configuration presets using the `variants` object. This is useful for creating reusable "profiles" for thinking models.
+You can define named configuration presets using the `variants` object. This is useful for creating reusable "profiles" for thinking models. These variants must be defined inside the `options` object of a specific model.
 
 ```json
-"variants": {
-  "variant-name": {
-    "thinkingConfig": {
-      "thinkingLevel": "high",
-      "includeThoughts": true
+{
+  "provider": {
+    "google": {
+      "models": {
+        "gemini-3-flash-preview": {
+          "options": {
+            "variants": {
+              "high-reasoning": {
+                "thinkingConfig": {
+                  "thinkingLevel": "high",
+                  "includeThoughts": true
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
