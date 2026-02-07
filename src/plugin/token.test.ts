@@ -16,7 +16,15 @@ function createClient() {
     auth: {
       set: mock(async () => {}),
     },
-  } as PluginClient & {
+    app: {
+      log: mock(async () => {}),
+    },
+    tui: {
+      toast: {
+        show: mock(async () => {}),
+      },
+    },
+  } as unknown as PluginClient & {
     auth: { set: ReturnType<typeof mock<(input: any) => Promise<void>>> };
   };
 }
@@ -37,7 +45,8 @@ describe("refreshAccessToken", () => {
         { status: 200 },
       );
     });
-    (globalThis as { fetch: typeof fetch }).fetch = fetchMock as unknown as typeof fetch;
+    (globalThis as { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
 
     const result = await refreshAccessToken(baseAuth, client);
 
@@ -57,7 +66,8 @@ describe("refreshAccessToken", () => {
         { status: 200 },
       );
     });
-    (globalThis as { fetch: typeof fetch }).fetch = fetchMock as unknown as typeof fetch;
+    (globalThis as { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
 
     const result = await refreshAccessToken(baseAuth, client);
 

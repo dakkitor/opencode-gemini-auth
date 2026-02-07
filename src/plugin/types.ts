@@ -42,13 +42,42 @@ export interface AuthMethod {
     url: string;
     instructions: string;
     method: string;
-    callback: (() => Promise<GeminiTokenExchangeResult>) | ((callbackUrl: string) => Promise<GeminiTokenExchangeResult>);
+    callback:
+      | (() => Promise<GeminiTokenExchangeResult>)
+      | ((callbackUrl: string) => Promise<GeminiTokenExchangeResult>);
   }>;
 }
 
 export interface PluginClient {
   auth: {
     set(input: { path: { id: string }; body: OAuthAuthDetails }): Promise<void>;
+  };
+  app: {
+    log(input: {
+      body: { service: string; level: string; message: string; extra?: any };
+    }): Promise<void>;
+  };
+  tui: {
+    toast: {
+      show(input: { body: { message: string; type?: string } }): Promise<void>;
+    };
+  };
+}
+
+export interface PluginResult {
+  auth: {
+    provider: string;
+    loader: (
+      getAuth: GetAuth,
+      provider: Provider,
+    ) => Promise<LoaderResult | null>;
+    methods: AuthMethod[];
+  };
+  tool?: Record<string, any>;
+  hooks?: {
+    "tui.command.execute"?: (input: {
+      command: string;
+    }) => Promise<{ handled: boolean } | void>;
   };
 }
 
@@ -59,7 +88,10 @@ export interface PluginContext {
 export interface PluginResult {
   auth: {
     provider: string;
-    loader: (getAuth: GetAuth, provider: Provider) => Promise<LoaderResult | null>;
+    loader: (
+      getAuth: GetAuth,
+      provider: Provider,
+    ) => Promise<LoaderResult | null>;
     methods: AuthMethod[];
   };
 }
