@@ -68,7 +68,7 @@ export interface GeminiUsageMetadata {
 
 /**
  * Thinking configuration accepted by Gemini.
- * - Gemini 3 models use thinkingLevel (string: 'low', 'medium', 'high')
+ * - Gemini 3 models use thinkingLevel (string: 'minimal', 'low', 'medium', 'high')
  * - Gemini 2.5 models use thinkingBudget (number)
  */
 export interface ThinkingConfig {
